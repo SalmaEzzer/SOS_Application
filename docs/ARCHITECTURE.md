@@ -15,21 +15,21 @@ L’authentification cible des jetons JWT via Spring Security. Les modalités de
 
 ## Android (`app/`)
 
-Le module Android existant est conservé. L’activité actuelle est une base XML/AppCompat ; la cible d’interface est Jetpack Compose et Material 3. La migration se fera écran par écran, sans refonte arbitraire du design.
+Le module Android existant et ses ressources XML sont conservés. `MainActivity` utilise maintenant `ComponentActivity` et Compose avec Material 3 ; Navigation Compose relie les cinq onglets. Le catalogue de composants est enregistré et accessible uniquement dans les variantes debug (`BuildConfig.DEBUG`). L’interface suit les cinq captures de référence sans refonte arbitraire.
 
 Organisation cible par fonctionnalité, à introduire au fil des besoins :
 
 ```text
 app/src/main/java/com/supmti/sos_application/
-  app/                 # Application, navigation et configuration
-  core/                # Résultats, erreurs et utilitaires partagés
-  data/                # Sources réseau/locales, DTO, implémentations repository
-  domain/              # Modèles métier, interfaces repository et use cases
-  feature/<feature>/   # Écran Compose, ViewModel et état d’écran
-  ui/theme/            # Couleurs, typographie, formes Material 3
+  core/ui/theme/       # Tokens SOS et thème Material 3
+  core/ui/components/  # Composants partagés Compose
+  core/navigation/     # Navigation commune et barre inférieure
+  core/network/        # Résultat réseau partagé (pas de client configuré)
+  core/model/          # Modèle local étiqueté démonstration
+  features/<feature>/  # Écrans Compose provisoires par destination
 ```
 
-Chaque feature possède son UI et ViewModel. Le ViewModel expose un `StateFlow<UiState>` immuable et reçoit des événements ; il délègue au domaine. Le domaine ne dépend ni d’Android, ni de Compose, ni de Retrofit. Les repositories cachent les sources de données et traduisent les erreurs en résultats métier compréhensibles.
+Les destinations et composants communs sont posés ; les ViewModels, StateFlow, cas d’usage et repositories métier restent à introduire avec les fonctionnalités réelles. À terme, chaque feature possèdera son UI et ViewModel. Le ViewModel exposera un `StateFlow<UiState>` immuable et déléguera au domaine. Le domaine ne dépendra ni d’Android, ni de Compose, ni d’un client HTTP. Les repositories cacheront les sources de données et traduiront les erreurs en résultats métier compréhensibles.
 
 ## Backend (`backend/`)
 
