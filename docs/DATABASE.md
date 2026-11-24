@@ -2,7 +2,7 @@
 
 ## Moteur et propriété
 
-PostgreSQL est la base du backend. Seul le backend y accède. Le schéma est versionné dans `database/migrations/` et appliqué de manière incrémentale par un outil de migration choisi avant le premier schéma (proposition : Flyway, à valider). Le démarrage du backend ne doit pas créer silencieusement un schéma de production via Hibernate.
+PostgreSQL est la base du backend. Seul le backend y accède. Les migrations Flyway exécutables sont versionnées dans `backend/src/main/resources/db/migration/` et appliquées de manière incrémentale. Le répertoire racine `database/` conserve les conventions et la documentation du modèle. Le démarrage du backend ne doit pas créer silencieusement un schéma de production via Hibernate.
 
 ## Conventions
 
@@ -15,7 +15,7 @@ PostgreSQL est la base du backend. Seul le backend y accède. Le schéma est ver
 
 ## Modèle métier
 
-Aucune table métier n’est fixée à ce stade. Les entités, relations, règles de conservation, suppression, confidentialité et besoins de recherche doivent être validés à partir des cas d’usage avant la première migration. Ne pas déduire qu’un compte utilisateur, un signalement ou une ressource possède un modèle définitif sans cette revue.
+Aucune table métier n’est fixée à ce stade. Au démarrage, Flyway crée seulement le schéma PostgreSQL `sos` et sa table technique d'historique ; la migration V1 ne fait que s'assurer que le schéma existe. Les entités, relations, règles de conservation, suppression, confidentialité et besoins de recherche doivent être validés à partir des cas d’usage avant toute migration métier. Ne pas déduire qu’un compte utilisateur, un signalement ou une ressource possède un modèle définitif sans cette revue.
 
 ## Environnements et sauvegardes
 

@@ -7,9 +7,9 @@ Socle technique d’une application mobile d’assistance permettant de recherch
 | Répertoire | Responsabilité | État |
 |---|---|---|
 | [`app/`](app) | Application Android Kotlin, Jetpack Compose, Material 3 et Navigation Compose. Écrans temporaires ; catalogue visible en debug uniquement. | Fondation Android |
-| [`backend/`](backend) | API REST Java Spring Boot, sécurité Spring Security/JWT et persistance Spring Data JPA. | Squelette documenté |
+| [`backend/`](backend) | API REST Java 21 / Spring Boot, Spring Security et Spring Data JPA/PostgreSQL. | Fondation exécutable, JWT et métier à venir |
 | [`admin/`](admin) | Point de départ pour une future interface de gestion. | Technologie à valider |
-| [`database/`](database) | Migrations PostgreSQL versionnées et conventions de schéma. | Initial |
+| [`database/`](database) | Conventions PostgreSQL ; migrations Flyway exécutables dans `backend/src/main/resources/db/migration/`. | Initial |
 | [`docs/`](docs) | Architecture, API, installation, décisions et guides. | Initial |
 
 ## Documentation
@@ -30,3 +30,7 @@ Socle technique d’une application mobile d’assistance permettant de recherch
 - Toute évolution passe par une branche et une Pull Request relue.
 
 Voir [INSTALLATION.md](docs/INSTALLATION.md) pour l’état actuel et les prérequis.
+
+## Démarrer le backend
+
+Le backend utilise Java 21 et Maven Wrapper. PostgreSQL se lance avec Docker Compose. Les commandes détaillées et expliquées figurent dans [docs/INSTALLATION.md](docs/INSTALLATION.md).

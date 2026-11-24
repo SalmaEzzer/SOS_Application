@@ -1,3 +1,3 @@
 # PostgreSQL et migrations
 
-Les migrations SQL versionnées seront déposées dans `migrations/`. Aucun schéma métier ni jeu de données n’est défini dans cette initialisation. Voir [`../docs/DATABASE.md`](../docs/DATABASE.md) et [`../docs/DECISIONS.md`](../docs/DECISIONS.md) avant la première migration.
+Les migrations SQL Flyway versionnées se trouvent dans `../backend/src/main/resources/db/migration/` afin d'être embarquées dans le JAR. La migration V1 s'assure uniquement que le schéma `sos` existe ; elle ne crée aucune table métier ni donnée. Voir [`../docs/DATABASE.md`](../docs/DATABASE.md) avant d'ajouter une migration.

@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+sos:
+  cors:
+    allowed-origins: ${SOS_CORS_ALLOWED_ORIGINS:}
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+management:
+  endpoint:
+    health:
+      show-details: never
