@@ -1,0 +1,8 @@
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+sos:
+  cors:
+    allowed-origins: ${SOS_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}

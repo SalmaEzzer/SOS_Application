@@ -33,23 +33,41 @@ Les destinations et composants communs sont posés ; les ViewModels, StateFlow, 
 
 ## Backend (`backend/`)
 
-Organisation cible par couches sous `com.sos` :
+Le projet Maven utilise Java 21, Spring Boot 4.2.0 et Maven Wrapper. Le package racine est `com.sos.backend`. L'organisation est modulaire par fonctionnalité :
 
 ```text
-config/       configuration et infrastructure transversale
-security/     filtres, principal et configuration Spring Security/JWT
-common/       erreurs et réponses communes
-<feature>/api contrôleurs et DTO HTTP
-<feature>/application services et cas d’usage
-<feature>/domain modèles et règles métier
-<feature>/infrastructure entités JPA et repositories
+config/ security/ common/ exception/
+auth/ user/ resource/ category/ location/ emergency/
+favorite/ proposal/ report/ notification/
+  controller/ service/ repository/ entity/ dto/
 ```
 
-Les contrôleurs valident/convertissent les entrées et délèguent à la couche applicative. Ils ne portent pas les règles métier ni les requêtes JPA. Les entités JPA ne sont pas exposées directement dans les réponses API. Les transactions sont délimitées dans la couche applicative. Les migrations SQL versionnées sont la source de vérité du schéma ; Hibernate ne doit pas modifier automatiquement le schéma en production.
+Chaque fonctionnalité ne prend que les couches dont elle a besoin. Les contrôleurs valident/convertissent les entrées et délèguent au service. Les services portent les cas d'usage et transactions. Les repositories accèdent à la persistance ; les entités JPA ne sont jamais exposées directement dans les réponses. Les DTO HTTP restent distincts. Les packages métier sont préparés mais vides ; aucun workflow JWT ou métier n'est encore implémenté.
+
+Responsabilités prévues (à préciser avec les cas d'usage avant d'implémenter) :
+
+| Package | Responsabilité prévue |
+|---|---|
+| `auth` | Connexion et cycle de vie JWT, après validation du flux et de la politique de sécurité. |
+| `user` | Comptes, profil, rôles et préférences utilisateur. |
+| `resource` | Répertoire des services d'assistance et informations de vérification. |
+| `category` | Catégories et libellés français/arabe. |
+| `location` | Communes/coordonnées de la région Rabat-Salé-Kénitra et filtres géographiques. |
+| `emergency` | Contacts d'urgence issus de sources officielles vérifiées ; aucun numéro supposé. |
+| `favorite` | Associations entre un utilisateur et ses ressources favorites. |
+| `proposal` | Propositions de correction ou d'ajout, en attente de modération. |
+| `report` | Signalements de problèmes liés à une ressource et suivi de leur traitement. |
+| `notification` | Notifications, canaux et préférences de consentement. |
+
+`config` assemble les paramètres d'environnement, CORS et OpenAPI ; `security` porte les règles HTTP et accueillera ensuite JWT ; `common` contient les réponses partagées ; `exception` traduit les erreurs en réponses HTTP communes. Ces packages ne remplacent pas les couches de chaque fonctionnalité.
+
+L'API autorise publiquement uniquement `GET /api/v1/health` et, en profil `dev`, Swagger. Les autres routes sont refusées par défaut. CORS utilise une liste d'origines configurable ; les valeurs de développement ne doivent pas être reprises en production sans validation.
+
+Flyway gère les migrations dans `backend/src/main/resources/db/migration/`. Hibernate utilise `ddl-auto=validate` : il valide les entités lorsqu'elles existeront, mais ne crée ni ne modifie le schéma. Flyway crée le schéma PostgreSQL `sos`, sa table technique d'historique, puis exécute V1 qui s'assure que le schéma existe. Aucune table métier n'est définie.
 
 ## Administration et données
 
-`admin/` est réservé à une interface future ; aucune technologie ou fonctionnalité admin n’est présumée. `database/migrations/` accueillera les migrations PostgreSQL ordonnées. Les migrations ne doivent contenir ni données personnelles ni faux répertoire de ressources.
+`admin/` est réservé à une interface future ; aucune technologie ou fonctionnalité admin n’est présumée. `database/` documente le modèle et les conventions. Les migrations exécutables sont dans `backend/src/main/resources/db/migration/` afin d'être incluses dans le JAR. Elles ne doivent contenir ni données personnelles ni faux répertoire de ressources.
 
 ## Échanges et erreurs
 

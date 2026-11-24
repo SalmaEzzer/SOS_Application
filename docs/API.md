@@ -12,19 +12,28 @@ Ce document fixe les conventions, pas un inventaire de fonctionnalités déjà i
 
 ## Erreur stable
 
+Le backend utilise le même objet `ApiError` pour les erreurs de validation, d'accès refusé et les erreurs inattendues. Les messages internes, valeurs rejetées et traces ne sont pas renvoyés.
+
 ```json
 {
-  "type": "about:blank",
-  "title": "Requête invalide",
+  "timestamp": "2026-11-24T12:00:00Z",
   "status": 400,
-  "detail": "Une ou plusieurs valeurs sont invalides.",
-  "instance": "/api/v1/...",
-  "code": "VALIDATION_ERROR",
-  "fieldErrors": []
+  "error": "Bad Request",
+  "message": "Une ou plusieurs valeurs sont invalides.",
+  "path": "/api/v1/...",
+  "fieldErrors": { "name": "ne doit pas être vide" }
 }
 ```
 
-Le champ `detail` reste générique pour les erreurs sensibles ; `fieldErrors` peut identifier les champs invalides sans recopier leur valeur.
+`timestamp` est UTC ; `fieldErrors` peut identifier les champs invalides sans recopier leur valeur. Le détail des erreurs inattendues et des accès refusés reste générique.
+
+## Routes disponibles
+
+| Méthode | Route | Accès | État |
+|---|---|---|---|
+| GET | `/api/v1/health` | Public | Vérification minimale : `{"status":"UP","service":"sos-backend"}` |
+| GET | `/v3/api-docs` | Profil `dev` uniquement | Spécification OpenAPI |
+| GET | `/swagger-ui/index.html` | Profil `dev` uniquement | Interface Swagger UI |
 
 ## JWT
 
