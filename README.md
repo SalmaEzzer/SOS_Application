@@ -6,7 +6,7 @@ Socle technique d’une application mobile d’assistance permettant de recherch
 
 | Répertoire | Responsabilité | État |
 |---|---|---|
-| [`app/`](app) | Application Android Kotlin. Le projet généré existant est conservé ; la cible est Compose et Material 3. | Initial |
+| [`app/`](app) | Application Android Kotlin, Jetpack Compose, Material 3 et Navigation Compose. Écrans temporaires ; catalogue visible en debug uniquement. | Fondation Android |
 | [`backend/`](backend) | API REST Java Spring Boot, sécurité Spring Security/JWT et persistance Spring Data JPA. | Squelette documenté |
 | [`admin/`](admin) | Point de départ pour une future interface de gestion. | Technologie à valider |
 | [`database/`](database) | Migrations PostgreSQL versionnées et conventions de schéma. | Initial |
